@@ -22,7 +22,7 @@ public class CsvService {
     }
 
     public void sortByColumn(CsvSortColumnRequest request) throws IOException {
-        externalMergeSortService.setFileName(request.getFilePath());
+        externalMergeSortService.setFilePath(request.getFilePath());
         externalMergeSortService.setCompareIndex(request.getCompareIndex());
         externalMergeSortService.setMaxLineRead(request.getMaxLineRead());
         log.info("Start sort the file: "+ request.getFilePath());

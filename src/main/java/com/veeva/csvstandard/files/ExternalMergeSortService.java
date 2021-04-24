@@ -19,13 +19,13 @@ import org.springframework.stereotype.Service;
 @NoArgsConstructor
 public class ExternalMergeSortService {
 
-    private String fileName;
+    private String filePath;
     private int compareIndex;
     private int maxLineRead;
 
 
-    public ExternalMergeSortService(String fileName, int compareIndex, int maxLineRead) {
-        this.fileName = fileName;
+    public ExternalMergeSortService(String filePath, int compareIndex, int maxLineRead) {
+        this.filePath = filePath;
         this.compareIndex = compareIndex;
         this.maxLineRead =maxLineRead;
     }
@@ -38,7 +38,7 @@ public class ExternalMergeSortService {
     public void externalMerge() throws IOException {
         AtomicInteger fileIndex = new AtomicInteger(-1);
         List<Product> listOfLines = new ArrayList<Product>();
-        FileReaderUtil fileReaderUtil =new FileReaderUtil(fileName);
+        FileReaderUtil fileReaderUtil =new FileReaderUtil(filePath);
         String columnsLine=fileReaderUtil.readLine();
         while (true) {
             Integer counterForLine =fileReaderUtil.readChunkOfLines(listOfLines,maxLineRead,compareIndex);
@@ -72,7 +72,7 @@ public class ExternalMergeSortService {
 
 
     private String generateFileName(int index) {
-        return this.fileName + "_" + "chunk" + "_"
+        return this.filePath + "_" + "chunk" + "_"
                 + index;
     }
 
@@ -105,7 +105,7 @@ public class ExternalMergeSortService {
     //  THE METHOD FETCH EVERY X FILES AND READ THEIR FIRST LINE THEN SORT AND WRITE INTO FINAL RESULT CSV FILE
     private void sortFilesAndWriteOutput(List<BufferedReader> listOfBufferedReader, String columnsLine) throws IOException {
         List<Product> listOfLinesfromAllFiles =readFirstLineFromEachFile(listOfBufferedReader);
-        FileWriter fw = new FileWriter(this.fileName + "_sorted.csv");
+        FileWriter fw = new FileWriter(this.filePath + "_sorted.csv");
         BufferedWriter bw = new BufferedWriter(fw);
         bw.append(columnsLine + "\n");
         while (true) {
